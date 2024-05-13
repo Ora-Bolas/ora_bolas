@@ -1,4 +1,6 @@
 from funcoes import *
+from game import animar
+from grafico import animacao_grafico
 import tkinter as tk
 
 def menu_opcoes():
@@ -17,6 +19,10 @@ def menu_opcoes():
         elif opcao == 6:
             distancia_robo_bola()
         elif opcao == 7:
+            animacao_grafico()
+        elif opcao == 8:
+            animar()
+        elif opcao == 9:
             janela.quit()
         else:
             output_label.config(text="Opção inválida, tente novamente!")
@@ -43,11 +49,11 @@ def menu_opcoes():
     opcao_label.grid(row=3, column=0, padx=10, pady=5, sticky='e')
     opcao_var = tk.StringVar(janela)
     opcao_var.set("Escolha sua opção")  # Valor padrão
-    opcoes_menu = tk.OptionMenu(janela, opcao_var, "1. Gráfico das trajetórias.","2. Gráfico das coordenadas em x", "3. Gráfico das coordenadas em y.", "4. Gráfico dos componentes vx e vy da velocidade.", "5. Gráfico dos componentes ax e ay da aceleração.", "6. Gráfico da distância relativa.", "7. Sair")
+    opcoes_menu = tk.OptionMenu(janela, opcao_var, "1. Gráfico das trajetórias.","2. Gráfico das coordenadas em x", "3. Gráfico das coordenadas em y.", "4. Gráfico dos componentes vx e vy da velocidade.", "5. Gráfico dos componentes ax e ay da aceleração.", "6. Gráfico da distância relativa.", "7. Animação do gráfico das trajetórias.", "8. Animação usando pygame", "9. Sair")
     opcoes_menu.config(bg='#f0f0f0', fg='#333', width=35, font=("Arial", 12))
     opcoes_menu.grid(row=3, column=1, padx=10, pady=5)
 
-    executar_botao = tk.Button(janela, text="Executar Opção", command=executar_opcao, bg='#007bff', fg='white', font=("Arial", 14, "bold"))
+    executar_botao = tk.Button(janela, text="Gerar gráfico", command=executar_opcao, bg='#007bff', fg='white', font=("Arial", 14, "bold"))
     executar_botao.grid(row=4, column=0, columnspan=2, pady=20)
 
     output_label = tk.Label(janela, text="", bg='#f0f0f0', fg='red', font=("Arial", 12))
