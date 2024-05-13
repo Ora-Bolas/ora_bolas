@@ -1,5 +1,7 @@
 from math import sqrt, atan, pi, cos, sin
 import matplotlib.pyplot as plt
+import tkinter as tk
+from tkinter import messagebox
 
 
 def distancia(xRobo, yRobo, xBola, yBola):
@@ -28,8 +30,8 @@ def grafico_trajetorias():
         x_robo.append(float(x))
         y_robo.append(float(y))
 
-    plt.plot(x_bola, y_bola, label='Aceleração da Bola', color='red')
-    plt.plot(x_robo, y_robo, label='Aceleração do Robô', color='blue')
+    plt.plot(x_bola, y_bola, label='Trajetória da Bola', color='red')
+    plt.plot(x_robo, y_robo, label='Trajetória do Robô', color='blue')
     plt.xlabel("Eixo X")
     plt.ylabel('Eixo Y')
     plt.title("Gráfico das trajetórias da bola e do robô.")
@@ -62,52 +64,69 @@ def trajetoria(x_robo, y_robo):
 
     grafico_trajetorias()
     
-# def posicao_robo_bola():
-#     pos_x_robo = []
-#     pos_y_robo = []
-#     pos_x_bola = []
-#     pos_y_bola = []
-#     tempo = []
+def posicao_robo_bola_y():
+    pos_y_robo = []
+    pos_y_bola = []
+    tempo = []
     
-
-#     for colunas_bola in open("dados.txt", 'r'):
-#         t, x_bola, y_bola = colunas_bola.split()
-#         t = float(t)
-#         t += 0.198
-#         pos_x_bola.append(x_bola)
-#         pos_y_bola.append(y_bola)
-#         tempo.append(t)
+    for line in open("dados.txt", 'r'):
+        t, x_bola, y_bola = line.split()
+        t = float(t)
+        t += 0.198
+        pos_y_bola.append(float(y_bola))
+        tempo.append(t)
 
        
-#     for colunas_robo in open("pos_robo.txt", 'r'):
-#         t, x_robo, y_robo = colunas_robo.split()
-#         pos_x_robo.append(x_robo)
-#         pos_y_robo.append(y_robo)
+    for line in open("pos_robo.txt", 'r'):
+        t, x_robo, y_robo = line.split()
+        pos_y_robo.append(float(y_robo))
     
+    def grafico_y(pos_y_robo, pos_y_bola):
+        plt.plot(tempo, pos_y_robo, label='Posição em Y do robô', color='blue')
+        plt.plot(tempo, pos_y_bola, label='Posição em Y da bola', color='red')
+        plt.xlabel("Tempo")
+        plt.ylabel('Posição dos elementos no eixo Y')
+        plt.title("Gráfico das coordenadas do robô e da bola no eixo Y em função do tempo")
+        plt.grid(True)
+        plt.legend()
+        # Exiba o gráfico
+        plt.show()
     
-#     def grafico_x():
-#         plt.plot(tempo, pos_x_robo, label='Posição em X do robô', color='blue')
-#         plt.plot(tempo, pos_x_bola, label='Posição em X da bola', color='red')
-#         plt.xlabel("Tempo")
-#         plt.ylabel('Posição dos elementos no eixo X')
-#         plt.title("Gráfico das coordenadas do robô e da bola no eixo x em função do tempo")
-#         plt.grid(True)
-#         plt.legend()
-#         # Exiba o gráfico
-#         plt.show()
+    grafico_y(pos_y_robo, pos_y_bola)
+            
+def posicao_robo_bola_x():
+    pos_x_robo = []
+    pos_x_bola = []
+    tempo = []
     
-#     def grafico_y():
-#         plt.plot(tempo, pos_y_robo, label='Posição em X do robô', color='blue')
-#         plt.plot(tempo, pos_y_bola, label='Posição em X da bola', color='red')
-#         plt.xlabel("Tempo")
-#         plt.ylabel('Posição dos elementos no eixo Y')
-#         plt.title("Gráfico das coordenadas do robô e da bola no eixo x em função do tempo")
-#         plt.grid(True)
-#         plt.legend()
-#         # Exiba o gráfico
-#         plt.show()
+    for line in open("dados.txt", 'r'):
+        t, x_bola, y_bola = line.split()
+        t = float(t)
+        t += 0.198
+        pos_x_bola.append(float(x_bola))
+        tempo.append(t)
+
+       
+    for line in open("pos_robo.txt", 'r'):
+        t, x_robo, y_robo = line.split()
+        pos_x_robo.append(float(x_robo))
+    
+    def grafico_x(pos_x_robo, pos_x_bola):
+        plt.plot(tempo, pos_x_robo, label='Posição em X do robô', color='blue')
+        plt.plot(tempo, pos_x_bola, label='Posição em X da bola', color='red')
+        plt.xlabel("Tempo")
+        plt.ylabel('Posição dos elementos no eixo X')
+        plt.title("Gráfico das coordenadas do robô e da bola no eixo X em função do tempo")
+        plt.grid(True)
+        plt.legend()
+        # Exiba o gráfico
+        plt.show()
+        
+    grafico_x(pos_x_robo, pos_x_bola)
+    
 
 def vel_robo(x_robo, y_robo):
+    
     print("a")
     
 
@@ -219,8 +238,8 @@ def distancia_robo_bola():
         for line in open("dados.txt", 'r'):
             t, temp1, temp2 = line.split()
             t = float(t)
-            t += 0.098
             tempo.append(t)
+            t += 0.098
             
             
 
@@ -232,4 +251,3 @@ def distancia_robo_bola():
     # Exiba o gráfico
     plt.show()
     
-            
