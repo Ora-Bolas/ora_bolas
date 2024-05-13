@@ -13,7 +13,7 @@ def menu_opcoes():
         elif opcao == 3:
             posicao_robo_bola_y()
         elif opcao == 4:
-            velocidade_robo(float(x_entry.get()), float(y_entry.get()))
+            velocidade_robo_bola_x(float(x_entry.get()), float(y_entry.get()))
         elif opcao == 5:
             acel_robo()
         elif opcao == 6:

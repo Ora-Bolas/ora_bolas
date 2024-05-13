@@ -64,7 +64,12 @@ def trajetoria(x_robo, y_robo):
 
     grafico_trajetorias()
 
-def velocidade_robo(x_robo, y_robo):
+def velocidade_robo_bola_x(x_robo, y_robo):
+    velocidade_x = []
+    velocidade_y = []
+    tempo = []
+    velocidade_x_bola = []
+    velocidade_y_bola = []
     n = calcularArctan(y_robo, x_robo)
     ax = 0.5 * cos(n)
     ay = 0.5 * sin(n)
@@ -74,6 +79,7 @@ def velocidade_robo(x_robo, y_robo):
         while(x <= t):
             velo_x = x_robo+(ax * x)
             velo_y = y_robo+(ay * x)
+            tempo.append(x)
             x += 0.02
             modulo = sqrt((velo_x**2) + (velo_y**2))
             if modulo >= 2.1:
@@ -81,6 +87,23 @@ def velocidade_robo(x_robo, y_robo):
                 velo_y = 2.1 * sin(n)
 
             file.write(f"{x:.2f} {velo_x:.4f} {velo_y:.4f}\n")
+    
+    for line in open("vel_bola.txt", 'r'):
+        t, x_bola, __ = line.split()
+        velocidade_x_bola.append(x_bola)
+    for lines in open("vel_robo.txt", 'r'):
+        _, x_robo, _ = lines.split()
+        velocidade_x.append(x_robo)
+
+    plt.plot(tempo, velocidade_x_bola, label='Velocidade em x da bola', color='red')
+    plt.plot(tempo, velocidade_x, label='Velocidade em x do robô', color='blue')
+    plt.xlabel("Tempo")
+    plt.ylabel('Velocidade no eixo x')
+    plt.title("Gráfico das componentes da velocidade em x")
+    plt.grid(True)
+    plt.legend()
+    # Exiba o gráfico
+    plt.show()
 
 def aceleracao_robo(x_robo, y_robo):
     x = 0
