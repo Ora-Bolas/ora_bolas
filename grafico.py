@@ -32,7 +32,7 @@ def animacao_grafico():
         return np.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
     # Definir o número total de frames com base na duração total da animação (6 segundos a 100 fps)
-    total_frames = 600
+    total_frames = 400
 
     # Função de animação
     def animate(frame):
@@ -56,6 +56,6 @@ def animacao_grafico():
             plt.text(0.115, 0.115, 'Interceptação!', fontsize=15, ha='center')
 
     # Configurar a animação
-    ani = FuncAnimation(plt.gcf(), animate, frames=total_frames, interval=20, repeat=False)
+    ani = FuncAnimation(plt.gcf(), animate, frames=total_frames, interval=10, repeat=False)
 
     plt.show()

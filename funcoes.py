@@ -9,7 +9,7 @@ def distancia(xRobo, yRobo, xBola, yBola):
 )
 
 def calcularArctan(yRobo, xRobo):
-   n = float(atan((5.18 - yRobo) / ( 5.08 - xRobo)))
+   n = atan((5.18 - yRobo) / ( 5.08 - xRobo))
 
    return n
 
@@ -41,12 +41,12 @@ def grafico_trajetorias():
     plt.show()
 
 def trajetoria(x_robo, y_robo):
-
     x = 0
     t = 6.0
     n = calcularArctan(x_robo, y_robo)
-    ax = 2 * cos(n)
-    ay = 2 * sin(n)
+    n_ang = (n * 180) / pi
+    ax = 0.5 * cos(n)
+    ay = 0.5 * sin(n)
 
     with open('pos_robo.txt', 'w+') as file:
 
@@ -63,7 +63,45 @@ def trajetoria(x_robo, y_robo):
             x += 0.02
 
     grafico_trajetorias()
-    
+
+def velocidade_robo(x_robo, y_robo):
+    n = calcularArctan(y_robo, x_robo)
+    ax = 0.5 * cos(n)
+    ay = 0.5 * sin(n)
+    x = 0
+    t = 6
+    with open("vel_robo.txt", 'w+') as file:
+        while(x <= t):
+            velo_x = x_robo+(ax * x)
+            velo_y = y_robo+(ay * x)
+            x += 0.02
+            modulo = sqrt((velo_x**2) + (velo_y**2))
+            if modulo >= 2.1:
+                velo_x = 2.1 * cos(n)
+                velo_y = 2.1 * sin(n)
+
+            file.write(f"{x:.2f} {velo_x:.4f} {velo_y:.4f}\n")
+
+def aceleracao_robo(x_robo, y_robo):
+    x = 0
+    t = 6.0
+    n = calcularArctan(x_robo, y_robo)
+    ax = 0.5 * cos(n)
+    ay = 0.5 * sin(n)
+
+    with open("aceleracao_robo.txt", 'w+') as file:
+        while (x < t):
+            px = x_robo + ((ax * (x**2))/2)
+            py = y_robo + ((ay * (x**2))/2)
+
+            if py >= 5.18:
+                py = 5.18
+            if px >= 5.08:  
+                px = 5.08
+
+            file.write(f"{x:.2f} {px:.4f} {py:.4f}\n")
+            x += 0.02
+
 def posicao_robo_bola_y():
     pos_y_robo = []
     pos_y_bola = []
