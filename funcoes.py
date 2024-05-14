@@ -1,7 +1,5 @@
-from math import sqrt, atan, pi, cos, sin
+from math import sqrt, atan, cos, sin
 import matplotlib.pyplot as plt
-import tkinter as tk
-from tkinter import messagebox
 
 
 def distancia(xRobo, yRobo, xBola, yBola):
@@ -30,6 +28,7 @@ def grafico_trajetorias():
         x_robo.append(float(x))
         y_robo.append(float(y))
 
+    plt.figure(figsize=(10, 6))
     plt.plot(x_bola, y_bola, label='Trajetória da Bola', color='red')
     plt.plot(x_robo, y_robo, label='Trajetória do Robô', color='blue')
     plt.xlabel("Eixo X")
@@ -44,7 +43,6 @@ def trajetoria(x_robo, y_robo):
     x = 0
     t = 6.0
     n = calcularArctan(x_robo, y_robo)
-    n_ang = (n * 180) / pi
     ax = 0.5 * cos(n)
     ay = 0.5 * sin(n)
 
@@ -66,44 +64,56 @@ def trajetoria(x_robo, y_robo):
 
 def velocidade_robo_bola_x(x_robo, y_robo):
     velocidade_x = []
-    velocidade_y = []
     tempo = []
     velocidade_x_bola = []
-    velocidade_y_bola = []
     n = calcularArctan(y_robo, x_robo)
-    ax = 0.5 * cos(n)
-    ay = 0.5 * sin(n)
-    x = 0
+    ax = 0.6 * cos(n)
+    ay = 0.6 * sin(n)
     t = 6
+    x = 0
+    v_inicial_x = 0
+    v_inicial_y = 0
     with open("vel_robo.txt", 'w+') as file:
         while(x <= t):
-            velo_x = x_robo+(ax * x)
-            velo_y = y_robo+(ay * x)
+            velo_x = v_inicial_x + (ax * x)
+            velo_y = v_inicial_y + (ay * x)
             tempo.append(x)
-            x += 0.02
+            
             modulo = sqrt((velo_x**2) + (velo_y**2))
             if modulo >= 2.1:
                 velo_x = 2.1 * cos(n)
                 velo_y = 2.1 * sin(n)
 
             file.write(f"{x:.2f} {velo_x:.4f} {velo_y:.4f}\n")
-    
-    for line in open("vel_bola.txt", 'r'):
-        t, x_bola, __ = line.split()
-        velocidade_x_bola.append(x_bola)
+            x += 0.02
     for lines in open("vel_robo.txt", 'r'):
         _, x_robo, _ = lines.split()
-        velocidade_x.append(x_robo)
-
+        velocidade_x.append(float(x_robo))
+    for line in open("vel_bola.txt", 'r'):
+        t, x_bola, __ = line.split()
+        velocidade_x_bola.append(float(x_bola))
+    
+    plt.figure(figsize=(10, 6))
     plt.plot(tempo, velocidade_x_bola, label='Velocidade em x da bola', color='red')
-    plt.plot(tempo, velocidade_x, label='Velocidade em x do robô', color='blue')
     plt.xlabel("Tempo")
     plt.ylabel('Velocidade no eixo x')
     plt.title("Gráfico das componentes da velocidade em x")
+    plt.plot(tempo, velocidade_x, label='Velocidade em x do robô', color='blue')
     plt.grid(True)
-    plt.legend()
+    plt.legend(fontsize='medium')
     # Exiba o gráfico
     plt.show()
+
+def velocidade_robo_bola_y(x_robo, y_robo):
+    velocidade_y = []
+    velocidade_y_bola = []
+
+    for lines in open("vel_robo.txt", 'r'):
+        _, __, y_robo = lines.split()
+        velocidade_y.append(float(y_robo))
+    for line in open("vel_bola.txt", 'r'):
+        t, __, y_bola = line.split()
+        velocidade_y_bola.append(float(y_bola))
 
 def aceleracao_robo(x_robo, y_robo):
     x = 0
@@ -143,6 +153,7 @@ def posicao_robo_bola_y():
         pos_y_robo.append(float(y_robo))
     
     def grafico_y(pos_y_robo, pos_y_bola):
+        plt.figure(figsize=(10, 6))
         plt.plot(tempo, pos_y_robo, label='Posição em Y do robô', color='blue')
         plt.plot(tempo, pos_y_bola, label='Posição em Y da bola', color='red')
         plt.xlabel("Tempo")
@@ -173,6 +184,7 @@ def posicao_robo_bola_x():
         pos_x_robo.append(float(x_robo))
     
     def grafico_x(pos_x_robo, pos_x_bola):
+        plt.figure(figsize=(10, 6))
         plt.plot(tempo, pos_x_robo, label='Posição em X do robô', color='blue')
         plt.plot(tempo, pos_x_bola, label='Posição em X da bola', color='red')
         plt.xlabel("Tempo")
@@ -238,6 +250,7 @@ def grafico_acel_robo():
         x_bola.append(float(x2))
         y_bola.append(float(y2))
 
+    plt.figure(figsize=(10, 6))
     plt.plot(ax_robo, ay_robo, label='Aceleração do Robô', color='blue')
     plt.plot(x_bola, y_bola, label='Aceleração da Bola', color='red')
     plt.xlabel("Componente ax")
@@ -268,10 +281,8 @@ def grafico_robo_bola():
         x_bola.append(float(x2))
         y_bola.append(float(y2))
 
-
+    plt.figure(figsize=(10, 6))
     plt.plot(x_bola, y_bola, label='Trajetória da Bola', color='red')
-
-
     plt.xlabel("Eixo X")
     plt.ylabel('Eixo Y')
     plt.title("Gráfico das trajetórias da bola e do robô até a interceptação.")
@@ -303,7 +314,7 @@ def distancia_robo_bola():
             t += 0.098
             
             
-
+    plt.figure(figsize=(10, 6))
     plt.plot(tempo, dist, color='blue')
     plt.xlabel("Tempo")
     plt.ylabel('Distância')
