@@ -15,14 +15,16 @@ def menu_opcoes():
         elif opcao == 4:
             velocidade_robo_bola_x(float(x_entry.get()), float(y_entry.get()))
         elif opcao == 5:
-            acel_robo()
+            grafico_velocidade_y()
         elif opcao == 6:
-            distancia_robo_bola()
+            aceleracao_robo_x()
         elif opcao == 7:
-            animacao_grafico()
+            distancia_robo_bola()
         elif opcao == 8:
-            animar()
+            animacao_grafico()
         elif opcao == 9:
+            animar()
+        elif opcao == 10:
             janela.quit()
         else:
             output_label.config(text="Opção inválida, tente novamente!")
@@ -49,7 +51,7 @@ def menu_opcoes():
     opcao_label.grid(row=3, column=0, padx=10, pady=5, sticky='e')
     opcao_var = tk.StringVar(janela)
     opcao_var.set("Escolha sua opção")  # Valor padrão
-    opcoes_menu = tk.OptionMenu(janela, opcao_var, "1. Gráfico das trajetórias.","2. Gráfico das coordenadas em x", "3. Gráfico das coordenadas em y.", "4. Gráfico dos componentes vx e vy da velocidade.", "5. Gráfico dos componentes ax e ay da aceleração.", "6. Gráfico da distância relativa.", "7. Animação do gráfico das trajetórias.", "8. Animação usando pygame", "9. Sair")
+    opcoes_menu = tk.OptionMenu(janela, opcao_var, "1. Gráfico das trajetórias.","2. Gráfico das coordenadas em x.", "3. Gráfico das coordenadas em y.", "4. Gráfico das velocidades em x.", "5. Gráfico das velocidades em y.", "6. Gráfico dos componentes ax e ay da aceleração.", "7. Gráfico da distância relativa.", "8. Animação do gráfico das trajetórias.", "9. Animação usando pygame", "10. Sair")
     opcoes_menu.config(bg='#f0f0f0', fg='#333', width=35, font=("Arial", 12))
     opcoes_menu.grid(row=3, column=1, padx=10, pady=5)
 

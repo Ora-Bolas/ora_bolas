@@ -104,36 +104,65 @@ def velocidade_robo_bola_x(x_robo, y_robo):
     # Exiba o gráfico
     plt.show()
 
-def velocidade_robo_bola_y(x_robo, y_robo):
+def grafico_velocidade_y():
     velocidade_y = []
     velocidade_y_bola = []
-
+    tempo = []
     for lines in open("vel_robo.txt", 'r'):
         _, __, y_robo = lines.split()
         velocidade_y.append(float(y_robo))
     for line in open("vel_bola.txt", 'r'):
         t, __, y_bola = line.split()
+        tempo.append(float(t))
         velocidade_y_bola.append(float(y_bola))
+        
+    plt.figure(figsize=(10, 6))
+    plt.plot(tempo, velocidade_y_bola, label='Velocidade em y da bola', color='red')
+    plt.xlabel("Tempo")
+    plt.ylabel('Velocidade no eixo y')
+    plt.title("Gráfico das componentes da velocidade em y")
+    plt.plot(tempo, velocidade_y, label='Velocidade em y do robô', color='blue')
+    plt.grid(True)
+    plt.legend(fontsize='medium')
+    # Exiba o gráfico
+    plt.show()
 
-def aceleracao_robo(x_robo, y_robo):
-    x = 0
-    t = 6.0
-    n = calcularArctan(x_robo, y_robo)
-    ax = 0.5 * cos(n)
-    ay = 0.5 * sin(n)
+def calcular_acel(x1, x2):
+    return (x2 - x1) / 0.02
 
-    with open("aceleracao_robo.txt", 'w+') as file:
-        while (x < t):
-            px = x_robo + ((ax * (x**2))/2)
-            py = y_robo + ((ay * (x**2))/2)
-
-            if py >= 5.18:
-                py = 5.18
-            if px >= 5.08:  
-                px = 5.08
-
-            file.write(f"{x:.2f} {px:.4f} {py:.4f}\n")
-            x += 0.02
+def aceleracao_robo_x():
+    dados = []
+    tempo = []
+    acel_bola_x = []
+    acel_x = []
+    with open("vel_robo.txt", "r") as arquivo:
+        for linha in arquivo:
+            t, x, __ = linha.split() 
+            dados.append(float(x))
+            
+    for i in range(len(dados) - 1):
+        x1 = dados[i]
+        x2 = dados[i + 1]
+        ax = float(calcular_acel(x1, x2))
+        acel_x.append(ax)
+    for line in open("acel_bola.txt", 'r'):
+        t, x, y = line.split()
+        tempo.append(float(t))
+        acel_bola_x.append(float(x))
+           
+    tamanho_min = min(len(acel_x), len(acel_bola_x))
+    tempo = list(range(tamanho_min))
+        
+    plt.figure(figsize=(10, 6))
+    plt.plot(tempo, acel_bola_x[:tamanho_min], label='Aceleração da bola em X', color='red')
+    plt.plot(tempo, acel_x[:tamanho_min], label='Aceleração do robô em X', color='blue')
+    plt.xlabel("Tempo")
+    plt.ylabel('Aceleração no eixo X')
+    plt.title("Gráfico das acelerações no eixo X")
+    plt.grid(True)
+    plt.legend(fontsize='medium')
+    # Exiba o gráfico
+    plt.show()
 
 def posicao_robo_bola_y():
     pos_y_robo = []
