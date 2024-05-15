@@ -17,7 +17,7 @@ def grafico_trajetorias():
     x_robo = []
     y_robo = []
 
-    for line in open("dados.txt", 'r'):
+    for line in open("trajetoria_bola.txt", 'r'):
         t, x2, y2 = line.split()
 
         x_bola.append(float(x2))
@@ -77,20 +77,26 @@ def velocidade_robo_bola_x(x_robo, y_robo):
         while(x <= t):
             velo_x = v_inicial_x + (ax * x)
             velo_y = v_inicial_y + (ay * x)
-            tempo.append(x)
-            
             modulo = sqrt((velo_x**2) + (velo_y**2))
             if modulo >= 2.1:
-                velo_x = 2.1 * cos(n)
-                velo_y = 2.1 * sin(n)
-
-            file.write(f"{x:.2f} {velo_x:.4f} {velo_y:.4f}\n")
-            x += 0.02
+                while x < 6:
+                    velo_x = velo_x - 0.02
+                    velo_y = velo_y - 0.02
+                    x += 0.02
+                    if velo_x <= 0 or velo_y <= 0:
+                        velo_x = 0
+                        velo_y = 0
+                    file.write(f"{x:.2f} {velo_x:.4f} {velo_y:.4f}\n")
+            else:
+                file.write(f"{x:.2f} {velo_x:.4f} {velo_y:.4f}\n")
+                x += 0.02
+                
     for lines in open("vel_robo.txt", 'r'):
-        _, x_robo, _ = lines.split()
+        t, x_robo, _ = lines.split()
         velocidade_x.append(float(x_robo))
+        tempo.append(float(t))
     for line in open("vel_bola.txt", 'r'):
-        t, x_bola, __ = line.split()
+        __, x_bola, __ = line.split()
         velocidade_x_bola.append(float(x_bola))
     
     plt.figure(figsize=(10, 6))
@@ -127,41 +133,80 @@ def grafico_velocidade_y():
     # Exiba o gráfico
     plt.show()
 
-def calcular_acel(x1, x2):
-    return (x2 - x1) / 0.02
+def calcular_aceleracao(v1, v2, t1, t2):
+    delta_v = v2 - v1
+    delta_t = t2 - t1
+    if delta_t != 0:
+        return delta_v / delta_t
+    else:
+        return 0
 
 def aceleracao_robo_x():
-    dados = []
+    velocidades_robo = []
     tempo = []
+    aceleracao_robo = []
     acel_bola_x = []
-    acel_x = []
+
+    for line in open("acel_bola.txt", 'r'):
+            t, x, y = line.split()
+            tempo.append(float(t))
+            acel_bola_x.append(float(x))
+            
     with open("vel_robo.txt", "r") as arquivo:
         for linha in arquivo:
-            t, x, __ = linha.split() 
-            dados.append(float(x))
-            
-    for i in range(len(dados) - 1):
-        x1 = dados[i]
-        x2 = dados[i + 1]
-        ax = float(calcular_acel(x1, x2))
-        acel_x.append(ax)
-    for line in open("acel_bola.txt", 'r'):
-        t, x, y = line.split()
-        tempo.append(float(t))
-        acel_bola_x.append(float(x))
-           
-    tamanho_min = min(len(acel_x), len(acel_bola_x))
-    tempo = list(range(tamanho_min))
-        
+            t, v_robo, _ = linha.split()
+            velocidades_robo.append(float(v_robo))
+
+    for i in range(len(velocidades_robo) - 1):
+        v1 = velocidades_robo[i]
+        v2 = velocidades_robo[i + 1]
+        t1 = tempo[i]
+        t2 = tempo[i + 1]
+        acel_robo = calcular_aceleracao(v1, v2, t1, t2)
+        aceleracao_robo.append(acel_robo)
+    
     plt.figure(figsize=(10, 6))
-    plt.plot(tempo, acel_bola_x[:tamanho_min], label='Aceleração da bola em X', color='red')
-    plt.plot(tempo, acel_x[:tamanho_min], label='Aceleração do robô em X', color='blue')
+    plt.plot(tempo[:-1], aceleracao_robo, label='Aceleração do robô em X', color='blue')
+    plt.plot(tempo, acel_bola_x, label='Aceleração da bola em X', color='red')
     plt.xlabel("Tempo")
     plt.ylabel('Aceleração no eixo X')
-    plt.title("Gráfico das acelerações no eixo X")
+    plt.title("Gráfico da aceleração do robô em relação ao tempo")
     plt.grid(True)
     plt.legend(fontsize='medium')
-    # Exiba o gráfico
+    plt.show()
+
+def aceleracao_robo_y():
+    velocidades_robo = []
+    tempo = []
+    aceleracao_robo = []
+    acel_bola_y = []
+    
+    with open("vel_robo.txt", "r") as arquivo:
+        for linha in arquivo:
+            t, _, v_robo = linha.split()
+            tempo.append(float(t))
+            velocidades_robo.append(float(v_robo))
+            
+    for i in range(len(velocidades_robo) - 1):
+        v1 = velocidades_robo[i]
+        v2 = velocidades_robo[i + 1]
+        t1 = tempo[i]
+        t2 = tempo[i + 1]
+        acel_robo = calcular_aceleracao(v1, v2, t1, t2)
+        aceleracao_robo.append(acel_robo)
+    
+    for line in open("acel_bola.txt", 'r'):
+            t, x, y = line.split()
+            acel_bola_y.append(float(y))
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(tempo[:-1], aceleracao_robo, label='Aceleração do robô em Y', color='blue')
+    plt.plot(tempo, acel_bola_y, label='Aceleração da bola em Y', color='red')
+    plt.xlabel("Tempo")
+    plt.ylabel('Aceleração no eixo Y')
+    plt.title("Gráfico da aceleração do robô no eixo Y em relação ao tempo")
+    plt.grid(True)
+    plt.legend(fontsize='medium')
     plt.show()
 
 def posicao_robo_bola_y():
@@ -169,7 +214,7 @@ def posicao_robo_bola_y():
     pos_y_bola = []
     tempo = []
     
-    for line in open("dados.txt", 'r'):
+    for line in open("trajetoria_bola.txt", 'r'):
         t, x_bola, y_bola = line.split()
         t = float(t)
         t += 0.198
@@ -200,7 +245,7 @@ def posicao_robo_bola_x():
     pos_x_bola = []
     tempo = []
     
-    for line in open("dados.txt", 'r'):
+    for line in open("trajetoria_bola.txt", 'r'):
         t, x_bola, y_bola = line.split()
         t = float(t)
         t += 0.198
@@ -226,72 +271,6 @@ def posicao_robo_bola_x():
         
     grafico_x(pos_x_robo, pos_x_bola)
     
-
-def vel_robo(x_robo, y_robo):
-    
-    print("a")
-    
-
-
-def acel_robo(x_robo, y_robo):
-      aceleracao_robo = 2  # m/s^2
-      raio_interceptacao = 0.095  # 9.5 cm em m
-
-      n = calcularArctan(y_robo, x_robo)
-      # Lendo a trajetória da bola
-      with open('dados.txt', 'r') as file:
-          linhas = file.read().splitlines()
-
-      with open('aceleracao_robo.txt', 'w+') as file:
-        for linha in linhas[1:]:
-            t, x_bola, y_bola = map(float, linha.split())
-
-            # Calcular a distância entre o robô e um ponto da trajetória da bola.
-            distancia_da_bola = distancia(x_robo, y_robo, x_bola, y_bola)
-
-            # Calcular o tempo que o robô leva para percorrer essa distância.
-            tempo_robo_atingir_bola = sqrt(
-              (2 * distancia_da_bola) / aceleracao_robo)
-
-            if t > 6:
-                grafico_acel_robo()
-                break
-            else:
-                # Calcular a nova posição do robô após t segundos
-                new_x_robo = distancia_da_bola * cos(n)
-                new_y_robo = distancia_da_bola * sin(n)
-
-                file.write(f"{t} {new_x_robo:.4f} {new_y_robo:.4f}\n")         
-
-def grafico_acel_robo():   
-    ax_robo = []
-    ay_robo = []
-    for line in open("aceleracao_robo.txt", 'r'):
-        tempo_robo, x, y = line.split()
-        ax_robo.append(float(x))
-        ay_robo.append(float(y))
-
-    x_bola = []
-    y_bola = []
-
-    for line in open("dados.txt", 'r'):
-        t, x2, y2 = line.split()
-        x_bola.append(float(x2))
-        y_bola.append(float(y2))
-
-    plt.figure(figsize=(10, 6))
-    plt.plot(ax_robo, ay_robo, label='Aceleração do Robô', color='blue')
-    plt.plot(x_bola, y_bola, label='Aceleração da Bola', color='red')
-    plt.xlabel("Componente ax")
-    plt.ylabel('Componente ay')
-    plt.title("Gráfico das componentes ax e ay da bola e do robô.")
-    plt.grid(True)
-    plt.legend()
-    # Exiba o gráfico
-    plt.show()
-
-
-
 def grafico_robo_bola():
     x_robo = []
     y_robo = []
@@ -305,7 +284,7 @@ def grafico_robo_bola():
     x_bola = []
     y_bola = []
 
-    for line in open("dados.txt", 'r'):
+    for line in open("trajetoria_bola.txt", 'r'):
         t, x2, y2 = line.split()
         x_bola.append(float(x2))
         y_bola.append(float(y2))
@@ -324,7 +303,7 @@ def grafico_robo_bola():
 def distancia_robo_bola():
     tempo = []
     dist = []
-    with open("pos_robo.txt", 'r') as arq1, open("dados.txt", 'r') as arq2:
+    with open("pos_robo.txt", 'r') as arq1, open("trajetoria_bola.txt", 'r') as arq2:
         for l1, l2 in zip(arq1, arq2):
             valores_robo = l1.split()
             valores_bola = l2.split()
@@ -336,7 +315,7 @@ def distancia_robo_bola():
             y = y_robo - y_bola
             modulo = sqrt((x**2) + (y**2))
             dist.append(modulo)
-        for line in open("dados.txt", 'r'):
+        for line in open("trajetoria_bola.txt", 'r'):
             t, temp1, temp2 = line.split()
             t = float(t)
             tempo.append(t)

@@ -41,7 +41,7 @@ def animar():
 
     # Carrega as posições do robô e da bola
     posicoes_robo_x, posicoes_robo_y = ler_posicoes_arquivo("pos_robo.txt")
-    posicoes_bola_x, posicoes_bola_y = ler_posicoes_arquivo("dados.txt")
+    posicoes_bola_x, posicoes_bola_y = ler_posicoes_arquivo("trajetoria_bola.txt")
 
     # Define o índice inicial
     indice_atual = 0

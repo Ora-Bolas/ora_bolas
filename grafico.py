@@ -15,8 +15,8 @@ def animacao_grafico():
         robot_x.append(x)
         robot_y.append(y)
 
-    # Carregar os dados da posição da bola do arquivo dados.txt
-    with open("dados.txt", "r") as file:
+    # Carregar os dados da posição da bola do arquivo trajetoria_bola.txt
+    with open("trajetoria_bola.txt", "r") as file:
         ball_data = file.readlines()
 
     # Extrair as coordenadas x e y da bola
@@ -52,8 +52,8 @@ def animacao_grafico():
         
         # Verificar a distância entre a bola e o robô
         d = distance(ball_x[ball_idx], ball_y[ball_idx], robot_x[robot_idx], robot_y[robot_idx])
-        if d <= 0.115:  # Se a distância for menor ou igual a 0.115, o robô interceptou a bola
-            plt.text(0.115, 0.115, 'Interceptação!', fontsize=15, ha='center')
+        if d <= 0.14:  # Se a distância for menor ou igual a 0.115, o robô interceptou a bola
+            plt.text(0.115, 0.115, "", fontsize=15, ha='center')
 
     # Configurar a animação
     ani = FuncAnimation(plt.gcf(), animate, frames=total_frames, interval=10, repeat=False)
