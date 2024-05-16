@@ -32,7 +32,7 @@ def animacao_grafico():
         return np.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
     # Definir o número total de frames com base na duração total da animação (6 segundos a 100 fps)
-    total_frames = 400
+    total_frames = 300
 
     # Função de animação
     def animate(frame):
