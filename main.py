@@ -1,9 +1,11 @@
 from funcoes import *
+from game import animar
+from grafico import animacao_grafico
 import tkinter as tk
 
 def menu_opcoes():
     def executar_opcao():
-        opcao = int(opcao_var.get().split('.')[0])  # Convertendo o texto selecionado para um número inteiro
+        opcao = int(opcao_var.get().split('.')[0]) 
         if opcao == 1:
             trajetoria(float(x_entry.get()), float(y_entry.get()))
         elif opcao == 2:
@@ -11,12 +13,20 @@ def menu_opcoes():
         elif opcao == 3:
             posicao_robo_bola_y()
         elif opcao == 4:
-            vel_robo(float(x_entry.get()), float(y_entry.get()))
+            velocidade_robo_bola_x(float(x_entry.get()), float(y_entry.get()))
         elif opcao == 5:
-            acel_robo()
+            grafico_velocidade_y()
         elif opcao == 6:
-            distancia_robo_bola()
+            aceleracao_robo_x()
         elif opcao == 7:
+            aceleracao_robo_y()
+        elif opcao == 8:
+            distancia_robo_bola()
+        elif opcao == 9:
+            animacao_grafico()
+        elif opcao == 10:
+            animar()
+        elif opcao == 11:
             janela.quit()
         else:
             output_label.config(text="Opção inválida, tente novamente!")
@@ -43,11 +53,11 @@ def menu_opcoes():
     opcao_label.grid(row=3, column=0, padx=10, pady=5, sticky='e')
     opcao_var = tk.StringVar(janela)
     opcao_var.set("Escolha sua opção")  # Valor padrão
-    opcoes_menu = tk.OptionMenu(janela, opcao_var, "1. Gráfico das trajetórias.","2. Gráfico das coordenadas em x", "3. Gráfico das coordenadas em y.", "4. Gráfico dos componentes vx e vy da velocidade.", "5. Gráfico dos componentes ax e ay da aceleração.", "6. Gráfico da distância relativa.", "7. Sair")
+    opcoes_menu = tk.OptionMenu(janela, opcao_var, "1. Gráfico das trajetórias.","2. Gráfico das coordenadas em x.", "3. Gráfico das coordenadas em y.", "4. Gráfico das velocidades em x.", "5. Gráfico das velocidades em y.", "6. Gráfico das acelerações no eixo X.", "7. Gráfico das acelerações no eixo Y.", "8. Gráfico da distância relativa.", "9. Animação do gráfico das trajetórias.", "10. Animação usando pygame", "11. Sair")
     opcoes_menu.config(bg='#f0f0f0', fg='#333', width=35, font=("Arial", 12))
     opcoes_menu.grid(row=3, column=1, padx=10, pady=5)
 
-    executar_botao = tk.Button(janela, text="Executar Opção", command=executar_opcao, bg='#007bff', fg='white', font=("Arial", 14, "bold"))
+    executar_botao = tk.Button(janela, text="Gerar gráfico", command=executar_opcao, bg='#007bff', fg='white', font=("Arial", 14, "bold"))
     executar_botao.grid(row=4, column=0, columnspan=2, pady=20)
 
     output_label = tk.Label(janela, text="", bg='#f0f0f0', fg='red', font=("Arial", 12))
