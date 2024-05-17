@@ -312,12 +312,9 @@ def distancia_robo_bola():
             x_bola = float(valores_bola[1])
             y_bola = float(valores_bola[2])
             x = x_robo - x_bola
-            print("x: ", x)
             y = y_robo - y_bola
-            print("y: " , y)
             modulo = sqrt((x**2) + (y**2))
             dist.append(modulo)
-            print(modulo)
         for line in open("trajetoria_bola.txt", 'r'):
             t, temp1, temp2 = line.split()
             t = float(t)
