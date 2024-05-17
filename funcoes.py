@@ -31,9 +31,9 @@ def grafico_trajetorias():
     plt.figure(figsize=(10, 6))
     plt.plot(x_bola, y_bola, label='Trajetória da Bola', color='red')
     plt.plot(x_robo, y_robo, label='Trajetória do Robô', color='blue')
-    plt.xlabel("Eixo X")
-    plt.ylabel('Eixo Y')
-    plt.title("Gráfico das trajetórias da bola e do robô.")
+    plt.xlabel("Eixo X (m)")
+    plt.ylabel('Eixo Y (m)')
+    plt.title("Gráfico das trajetórias da bola e do robô. (m)")
     plt.grid(True)
     plt.legend()
     # Exiba o gráfico
@@ -67,8 +67,8 @@ def velocidade_robo_bola_x(x_robo, y_robo):
     tempo = []
     velocidade_x_bola = []
     n = calcularArctan(y_robo, x_robo)
-    ax = 0.6 * cos(n)
-    ay = 0.6 * sin(n)
+    ax = 0.5 * cos(n)
+    ay = 0.5 * sin(n)
     t = 6
     x = 0
     v_inicial_x = 0
@@ -78,10 +78,10 @@ def velocidade_robo_bola_x(x_robo, y_robo):
             velo_x = v_inicial_x + (ax * x)
             velo_y = v_inicial_y + (ay * x)
             modulo = sqrt((velo_x**2) + (velo_y**2))
-            if modulo >= 2.1:
+            if modulo >= 1.9:
                 while x < 6:
-                    velo_x = velo_x - 0.02
-                    velo_y = velo_y - 0.02
+                    velo_x = velo_x - 0.018
+                    velo_y = velo_y - 0.018
                     x += 0.02
                     if velo_x <= 0 or velo_y <= 0:
                         velo_x = 0
@@ -101,9 +101,9 @@ def velocidade_robo_bola_x(x_robo, y_robo):
     
     plt.figure(figsize=(10, 6))
     plt.plot(tempo, velocidade_x_bola, label='Velocidade em x da bola', color='red')
-    plt.xlabel("Tempo")
-    plt.ylabel('Velocidade no eixo x')
-    plt.title("Gráfico das componentes da velocidade em x")
+    plt.xlabel("Tempo (s)")
+    plt.ylabel('Velocidade no eixo x (m/s)')
+    plt.title("Gráfico das componentes da velocidade em x (m/s)")
     plt.plot(tempo, velocidade_x, label='Velocidade em x do robô', color='blue')
     plt.grid(True)
     plt.legend(fontsize='medium')
@@ -124,9 +124,9 @@ def grafico_velocidade_y():
         
     plt.figure(figsize=(10, 6))
     plt.plot(tempo, velocidade_y_bola, label='Velocidade em y da bola', color='red')
-    plt.xlabel("Tempo")
-    plt.ylabel('Velocidade no eixo y')
-    plt.title("Gráfico das componentes da velocidade em y")
+    plt.xlabel("Tempo (s)")
+    plt.ylabel('Velocidade no eixo y (m/s)')
+    plt.title("Gráfico das componentes da velocidade em y (m/s)")
     plt.plot(tempo, velocidade_y, label='Velocidade em y do robô', color='blue')
     plt.grid(True)
     plt.legend(fontsize='medium')
@@ -168,9 +168,9 @@ def aceleracao_robo_x():
     plt.figure(figsize=(10, 6))
     plt.plot(tempo[:-1], aceleracao_robo, label='Aceleração do robô em X', color='blue')
     plt.plot(tempo, acel_bola_x, label='Aceleração da bola em X', color='red')
-    plt.xlabel("Tempo")
-    plt.ylabel('Aceleração no eixo X')
-    plt.title("Gráfico da aceleração do robô em relação ao tempo")
+    plt.xlabel("Tempo (s)")
+    plt.ylabel('Aceleração no eixo X (m/s^2)')
+    plt.title("Gráfico da aceleração do robô em relação ao tempo (m/s^2)")
     plt.grid(True)
     plt.legend(fontsize='medium')
     plt.show()
@@ -202,9 +202,9 @@ def aceleracao_robo_y():
     plt.figure(figsize=(10, 6))
     plt.plot(tempo[:-1], aceleracao_robo, label='Aceleração do robô em Y', color='blue')
     plt.plot(tempo, acel_bola_y, label='Aceleração da bola em Y', color='red')
-    plt.xlabel("Tempo")
-    plt.ylabel('Aceleração no eixo Y')
-    plt.title("Gráfico da aceleração do robô no eixo Y em relação ao tempo")
+    plt.xlabel("Tempo (s)")
+    plt.ylabel('Aceleração no eixo Y (m/s^2)')
+    plt.title("Gráfico da aceleração do robô no eixo Y em relação ao tempo (m/s^2)")
     plt.grid(True)
     plt.legend(fontsize='medium')
     plt.show()
@@ -230,8 +230,8 @@ def posicao_robo_bola_y():
         plt.figure(figsize=(10, 6))
         plt.plot(tempo, pos_y_robo, label='Posição em Y do robô', color='blue')
         plt.plot(tempo, pos_y_bola, label='Posição em Y da bola', color='red')
-        plt.xlabel("Tempo")
-        plt.ylabel('Posição dos elementos no eixo Y')
+        plt.xlabel("Tempo (s)")
+        plt.ylabel('Posição dos elementos no eixo Y (m)')
         plt.title("Gráfico das coordenadas do robô e da bola no eixo Y em função do tempo")
         plt.grid(True)
         plt.legend()
@@ -261,8 +261,8 @@ def posicao_robo_bola_x():
         plt.figure(figsize=(10, 6))
         plt.plot(tempo, pos_x_robo, label='Posição em X do robô', color='blue')
         plt.plot(tempo, pos_x_bola, label='Posição em X da bola', color='red')
-        plt.xlabel("Tempo")
-        plt.ylabel('Posição dos elementos no eixo X')
+        plt.xlabel("Tempo (s)")
+        plt.ylabel('Posição dos elementos no eixo X (m)')
         plt.title("Gráfico das coordenadas do robô e da bola no eixo X em função do tempo")
         plt.grid(True)
         plt.legend()
@@ -291,8 +291,8 @@ def grafico_robo_bola():
 
     plt.figure(figsize=(10, 6))
     plt.plot(x_bola, y_bola, label='Trajetória da Bola', color='red')
-    plt.xlabel("Eixo X")
-    plt.ylabel('Eixo Y')
+    plt.xlabel("Eixo X (m)")
+    plt.ylabel('Eixo Y (m)')
     plt.title("Gráfico das trajetórias da bola e do robô até a interceptação.")
     plt.grid(True)
     plt.legend()
@@ -324,8 +324,8 @@ def distancia_robo_bola():
             
     plt.figure(figsize=(10, 6))
     plt.plot(tempo, dist, color='blue')
-    plt.xlabel("Tempo")
-    plt.ylabel('Distância')
+    plt.xlabel("Tempo (s)")
+    plt.ylabel('Distância (m)')
     plt.title("Distância relativa entre o robô e a bola.")
     plt.grid(True)
     # Exiba o gráfico

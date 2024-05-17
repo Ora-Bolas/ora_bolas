@@ -8,8 +8,8 @@ def ler_posicoes_arquivo(nome_arquivo):
         with open(nome_arquivo, 'r') as arquivo:
             for line in arquivo:
                 _, x, y = line.split()
-                posicoes_x.append(float(x)/10)
-                posicoes_y.append(float(y)/10)
+                posicoes_x.append(float(x) / 10)
+                posicoes_y.append(float(y) / 10)
         return posicoes_x, posicoes_y
     except FileNotFoundError:
         print("Arquivo não encontrado:", nome_arquivo)
@@ -17,6 +17,23 @@ def ler_posicoes_arquivo(nome_arquivo):
     except ValueError:
         print("Erro ao ler os dados do arquivo:", nome_arquivo)
         return [], []
+
+import pygame
+
+import pygame
+
+def draw_field(window, width, height):
+    green = (0, 128, 0)
+    white = (255, 255, 255)
+
+    window.fill(green)
+    pygame.draw.line(window, white, (width // 2, 0), (width // 2, height), 5)
+    pygame.draw.circle(window, white, (width // 2, height // 2), 70, 5)
+    pygame.draw.circle(window, white, (width // 2, height // 2), 8)
+
+    # Desenhar as áreas do campo de futebol
+    pygame.draw.rect(window, white, (0, height // 2 - 50, 50, 100), 5)
+    pygame.draw.rect(window, white, (width - 50, height // 2 - 50, 50, 100), 5)
 
 def animar():
     pygame.init()
@@ -27,13 +44,8 @@ def animar():
     # Define as dimensões da tela
     LARGURA_TELA, ALTURA_TELA = LARGURA_CAMPO, ALTURA_CAMPO
 
-    # Define as margens
-    MARGEM_ESQUERDA = (LARGURA_TELA - LARGURA_CAMPO) // 2
-    MARGEM_SUPERIOR = (ALTURA_TELA - ALTURA_CAMPO) // 2
-
     # Define as cores
     BRANCO = (255, 255, 255)
-    VERDE = (0, 128, 0)
 
     # Cria a tela
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
@@ -49,32 +61,24 @@ def animar():
     clock = pygame.time.Clock()
 
     # Loop principal do jogo
-    while True:
+    rodando = True
+    while rodando:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                rodando = False
 
-        # Preenche o fundo com a cor verde
-        tela.fill(VERDE)
-
-        # Desenha o campo
-        pygame.draw.rect(tela, BRANCO, (MARGEM_ESQUERDA, MARGEM_SUPERIOR, LARGURA_CAMPO, ALTURA_CAMPO), 2)
-        pygame.draw.line(tela, BRANCO, (MARGEM_ESQUERDA + LARGURA_CAMPO // 2, MARGEM_SUPERIOR),
-                         (MARGEM_ESQUERDA + LARGURA_CAMPO // 2, MARGEM_SUPERIOR + ALTURA_CAMPO), 2)
-        pygame.draw.rect(tela, BRANCO, (MARGEM_ESQUERDA, MARGEM_SUPERIOR + (ALTURA_CAMPO // 2) - 50, 50, 100), 5)
-        pygame.draw.rect(tela, BRANCO, (MARGEM_ESQUERDA + LARGURA_CAMPO - 50, MARGEM_SUPERIOR + (ALTURA_CAMPO // 2) - 50, 50, 100), 5)
-        pygame.draw.circle(tela, BRANCO, (MARGEM_ESQUERDA + LARGURA_CAMPO // 2, MARGEM_SUPERIOR + ALTURA_CAMPO // 2), 75, 2)
+        # Desenha o campo de futebol
+        draw_field(tela, LARGURA_TELA, ALTURA_TELA)
 
         # Desenha os objetos na tela
         if indice_atual < len(posicoes_robo_x):
-            x_robo = MARGEM_ESQUERDA + posicoes_robo_x[indice_atual] * (LARGURA_CAMPO - 20)
-            y_robo = MARGEM_SUPERIOR + (1 - posicoes_robo_y[indice_atual]) * (ALTURA_CAMPO - 20)
-            pygame.draw.circle(tela, BRANCO, (int(x_robo), ALTURA_TELA - int(y_robo)), 10)
+            x_robo = (posicoes_robo_x[indice_atual] * 1000) * (LARGURA_TELA / LARGURA_CAMPO)
+            y_robo = ALTURA_TELA - (posicoes_robo_y[indice_atual] * 1000) * (ALTURA_TELA / ALTURA_CAMPO)
+            pygame.draw.circle(tela, BRANCO, (int(x_robo), int(y_robo)), 10)
         if indice_atual < len(posicoes_bola_x):
-            x_bola = MARGEM_ESQUERDA + posicoes_bola_x[indice_atual] * (LARGURA_CAMPO - 20)
-            y_bola = MARGEM_SUPERIOR + (1 - posicoes_bola_y[indice_atual]) * (ALTURA_CAMPO - 20)
-            pygame.draw.circle(tela, BRANCO, (int(x_bola), ALTURA_TELA - int(y_bola)), 7)
+            x_bola = (posicoes_bola_x[indice_atual] * 1000) * (LARGURA_TELA / LARGURA_CAMPO)
+            y_bola = ALTURA_TELA - (posicoes_bola_y[indice_atual] * 1000) * (ALTURA_TELA / ALTURA_CAMPO)
+            pygame.draw.circle(tela, BRANCO, (int(x_bola), int(y_bola)), 7)
 
         # Atualiza a tela
         pygame.display.flip()
@@ -88,3 +92,9 @@ def animar():
         # Verifica se todos os frames foram exibidos
         if indice_atual >= max(len(posicoes_robo_x), len(posicoes_bola_x)):
             break
+
+    pygame.quit()
+    sys.exit()
+
+if __name__ == "__main__":
+    animar()
