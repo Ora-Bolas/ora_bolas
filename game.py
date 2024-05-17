@@ -18,10 +18,6 @@ def ler_posicoes_arquivo(nome_arquivo):
         print("Erro ao ler os dados do arquivo:", nome_arquivo)
         return [], []
 
-import pygame
-
-import pygame
-
 def draw_field(window, width, height):
     green = (0, 128, 0)
     white = (255, 255, 255)
@@ -46,6 +42,7 @@ def animar():
 
     # Define as cores
     BRANCO = (255, 255, 255)
+    PRETO = (0,0,0)
 
     # Cria a tela
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
@@ -74,11 +71,11 @@ def animar():
         if indice_atual < len(posicoes_robo_x):
             x_robo = (posicoes_robo_x[indice_atual] * 1000) * (LARGURA_TELA / LARGURA_CAMPO)
             y_robo = ALTURA_TELA - (posicoes_robo_y[indice_atual] * 1000) * (ALTURA_TELA / ALTURA_CAMPO)
-            pygame.draw.circle(tela, BRANCO, (int(x_robo), int(y_robo)), 10)
+            pygame.draw.circle(tela, PRETO, (int(x_robo), int(y_robo)), 8)
         if indice_atual < len(posicoes_bola_x):
             x_bola = (posicoes_bola_x[indice_atual] * 1000) * (LARGURA_TELA / LARGURA_CAMPO)
             y_bola = ALTURA_TELA - (posicoes_bola_y[indice_atual] * 1000) * (ALTURA_TELA / ALTURA_CAMPO)
-            pygame.draw.circle(tela, BRANCO, (int(x_bola), int(y_bola)), 7)
+            pygame.draw.circle(tela, BRANCO, (int(x_bola), int(y_bola)), 5)
 
         # Atualiza a tela
         pygame.display.flip()
