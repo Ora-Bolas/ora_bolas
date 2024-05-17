@@ -80,8 +80,8 @@ def velocidade_robo_bola_x(x_robo, y_robo):
             modulo = sqrt((velo_x**2) + (velo_y**2))
             if modulo >= 1.9:
                 while x < 6:
-                    velo_x = velo_x - 0.018
-                    velo_y = velo_y - 0.018
+                    velo_x = velo_x - 0.072
+                    velo_y = velo_y - 0.072
                     x += 0.02
                     if velo_x <= 0 or velo_y <= 0:
                         velo_x = 0
@@ -312,14 +312,16 @@ def distancia_robo_bola():
             x_bola = float(valores_bola[1])
             y_bola = float(valores_bola[2])
             x = x_robo - x_bola
+            print("x: ", x)
             y = y_robo - y_bola
+            print("y: " , y)
             modulo = sqrt((x**2) + (y**2))
             dist.append(modulo)
+            print(modulo)
         for line in open("trajetoria_bola.txt", 'r'):
             t, temp1, temp2 = line.split()
             t = float(t)
             tempo.append(t)
-            t += 0.098
             
             
     plt.figure(figsize=(10, 6))
